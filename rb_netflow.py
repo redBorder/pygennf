@@ -108,3 +108,86 @@ class NetflowRecordV5(Packet):
 bind_layers( NetflowHeader,   NetflowHeaderV5, version=5)
 bind_layers( NetflowHeaderV5, NetflowRecordV5 )
 bind_layers( NetflowRecordV5, NetflowRecordV5 )
+
+#########################################
+### Netflow Version 10
+#########################################
+
+class NetflowHeaderv10(Packet):
+    name = "Netflow Header V10"
+    fields_desc = [
+                    ShortField("version", 10),
+                    ShortField("length", 508),
+                    IntField("ExportTime", 1380127358),
+                    IntField("FlowSequence", 0),
+                    IntField("ObservationDomainId", 256)
+    ]
+
+
+class Flow_Set_v10(Packet):
+    name = "Netflow flow header"
+    fields_desc = [ ShortField("FlowSet_id", 269),
+                    ShortField("FlowSet_Length",392)
+    ]
+
+
+class FlowTemplate_ID_v10(Packet):
+    name = "Netflow header template"
+    fields_desc = [ ShortField("template_id", 269),
+                    ShortField("count", 0)
+    ]
+
+
+class NetFlowTemplatev10Field(Packet):
+    name = "Netflow Template v10 pen provided 0"
+    fields_desc = [ BitField("Pen_provided", 0, 1),
+                    BitFieldLenField("type", 0 , 15),
+                    ShortField('length', 4)]
+
+
+class NetFlowTemplatev10FieldPEN(Packet):
+    name = "Netflow Template v10 pen provided 1"
+    fields_desc = [ BitField("Pen_provided", 1, 1),
+                    BitFieldLenField("type", 12235 ,15),
+                    ShortField('length', 65535),
+                    IntField("pen", 9)]
+
+
+
+class Flow_v10(Packet):
+    name = "Element flow (v10)"
+    fields_desc = [
+                    IPField("src", "127.0.0.1"),
+                    IPField("dst", "127.0.0.1"),
+                    ByteField("IPVersion", 4),
+                    ByteField("prot", 6),
+                    ShortField("srcport", 9090),
+                    ShortField("dstport", 2284),
+                    ByteField("FER", 3),
+                    ByteField("biflow_direction",1),
+                    ByteField("SamplerID", 0),
+                    XIntField("EPE_A", 0x8f53b990),
+                    XIntField("EPE_B", 0x00010000), # ERROROR: HEX ???
+                    IntField('applicationID', 13),
+                    ByteField('length1', 6),
+                    X3BytesField("EPE1_A",0x03401),
+                    X3BytesField("EPE1_B",0x03000),
+                    ByteField('length2', 6),
+                    X3BytesField("EPE2_A",0x03000),
+                    X3BytesField("EPE2_B",0x03402),
+                    ByteField('length3', 6),
+                    X3BytesField("EPE3_A",0x03000),
+                    X3BytesField("EPE3_B",0x03403),
+                    ByteField('length4', 6),
+                    X3BytesField("EPE4_A",0x03000),
+                    X3BytesField("EPE4_B",0x03404),
+                    BitFieldLenField("Octects", 40 , 64),
+                    IntField("packets", 1),
+                    IntField("startTime", 2052594),
+                    IntField("EndTime", 2052594),
+    ]
+
+
+bind_layers( NetFlowTemplatev10Field,   NetFlowTemplatev10FieldPEN, version=5)
+#bind_layers( NetflowHeaderV5, NetflowRecordV5 )
+#bind_layers( NetflowRecordV5, NetflowRecordV5 )
