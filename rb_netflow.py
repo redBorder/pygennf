@@ -12,6 +12,7 @@ Cisco NetFlow protocol v1 and v5
 from scapy.fields import *
 from scapy.packet import *
 from scapy.data import IP_PROTOS
+from scapy.layers.inet6 import *
 
 
 class NetflowHeader(Packet):
@@ -183,9 +184,84 @@ class Flow_v10(Packet):
                     X3BytesField("EPE4_B",0x03404),
                     BitFieldLenField("Octects", 40 , 64),
                     IntField("packets", 1),
-                    IntField("startTime", 2052594),
-                    IntField("EndTime", 2052594),
+                    IEEEFloatField("startTime", 2052594),
+                    IEEEFloatField("EndTime", 2052594),
     ]
+
+
+bind_layers( NetFlowTemplatev10Field,   NetFlowTemplatev10FieldPEN, version=5)
+#bind_layers( NetflowHeaderV5, NetflowRecordV5 )
+#bind_layers( NetflowRecordV5, NetflowRecordV5 )
+
+#########################################
+### Netflow Version 9
+#########################################
+
+class Netflow_Headerv9(Packet):
+    name = "Netflow Header V9"
+    fields_desc = [
+                    ShortField("version", 10),
+                    ShortField("count", 3),
+                    IEEEFloatField("SysUptime", 27.027095000),
+                    IntField("Timestamp",1392292623),
+                    IntField("FlowSequence", 0),
+                    IntField("SourceId", 243)
+    ]
+
+## FlowSet 1
+class FlowSet_Header_v9(Packet): #FlowSet 1
+    name = "Netflow flow header"
+    fields_desc = [ ShortField("FlowSet_id", 0),
+                    ShortField("FlowSet_length",156)
+    ]
+
+### Template (Id 258) (header de template)
+class FlowTemplate_ID_v9(Packet):
+    name = "Netflow header template"
+    fields_desc = [ ShortField("template_id", 258),
+                    ShortField("count", 18)
+    ]
+
+#### Field (1/18) Tipo de los templates
+class NetFlowTemplatev9Field(Packet):
+    name = "Netflow Template v9 pen provided 0"
+    fields_desc = [ShortField("type_template", 0),
+                   ShortField('length', 4),
+    ]
+
+
+class Flow_header_v9(Packet):
+    name = "Netflow Template v9 pen provided 1"
+    fields_desc = [ BitFieldLenField("type", 12235, 15),
+                    ShortField('length', 65535),
+    ]
+
+
+## FlowSet_Header_v9 (Ya definido)
+
+
+class Flow_v9(Packet):
+    name = "Element flow (v9)"
+    fields_desc = [IntField("Octets", 113162),
+            IntField("Packets", 826),
+            ByteField("Protocol", 17),
+            XByteField("IP_ToS", 0x00),
+            XByteField("TCP_Flags", 0x00),
+            ShortField("SrcPort", 2416),
+            ShortField("InputInt", 0),
+            ShortField("DstPort", 53),
+            ShortField("OutputInt", 0),
+            IntField("SrcAS", 0),
+            IntField("DstAS", 0),
+            IEEEFloatField("StartTime", 0.002000000),
+            IEEEFloatField("EndTime", 27.061000000),
+            IP6Field("SrcAddr", "3ffe:507:0:1:200:86ff:fe05:80da"),
+            IP6Field("DstAddr", "3ffe:501:4819::42"),
+            ByteField("SrcMask", 0),
+            ByteField("DstMask", 0),
+            IP6Field("NextHop", "::"),
+            BitFieldLenField("Padding", 0,24)
+        ]
 
 
 bind_layers( NetFlowTemplatev10Field,   NetFlowTemplatev10FieldPEN, version=5)
