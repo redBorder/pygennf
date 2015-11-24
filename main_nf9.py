@@ -22,6 +22,11 @@ from rb_netflow import *
 
 # Netflow9
 
+IP_SRC = "10.0.203.2"
+IP_DST = "10.0.30.89"
+PORT_SRC = 2055
+PORT_DST = 2055
+
 header_v9 = Netflow_Headerv9(version=9, count= 2, SysUptime=0x000069d7, Timestamp=1392292623, FlowSequence= 0,SourceId= 243)
 
 
@@ -65,8 +70,7 @@ flows = [
     ]
 
 
-
-data = Ether()/IP()/UDP(sport=64114,dport=2055)
+data = IP(dst=IP_DST)/UDP(sport=PORT_SRC,dport=PORT_DST)
 data/=header_v9/flowSet_header_v9/flowset_id_v9
 
 for t in template:
@@ -79,4 +83,4 @@ for f in flows:
 
 
 wrpcap('v9.pcap', data)
-
+send(data)

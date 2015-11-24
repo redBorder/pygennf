@@ -20,6 +20,12 @@ import scapy
 from scapy.all import *
 from rb_netflow import *
 
+IP_SRC = "10.0.203.2"
+IP_DST = "10.0.30.89"
+PORT_SRC = 2055
+PORT_DST = 2055
+#IP_SRC = "10.0.30.89"
+#IP_DST = "10.0.203.2"
 # Netflow10
 
 header_v10 = NetflowHeaderv10(version=10, length=0, ExportTime=1380127358,\
@@ -113,7 +119,8 @@ flows = [
 
 
 
-data = Ether()/IP()/UDP(sport=64114,dport=2055)/header_v10/set_header_1/template_id
+data = IP(dst=IP_DST)/UDP(sport=PORT_SRC,dport=PORT_DST)
+data/=header_v10/set_header_1/template_id
 
 for t in template:
     data/=t
@@ -126,7 +133,7 @@ for f in flows:
 
 
 wrpcap('v10.pcap', data)
-
+send(data)
 ## Netflow9
 
 #nf9fs = NetflowV9Flowset()

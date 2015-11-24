@@ -20,6 +20,11 @@ import scapy
 from scapy.all import *
 from rb_netflow import *
 
+IP_SRC = "10.0.203.2"
+IP_DST = "10.0.30.89"
+PORT_SRC = 2055
+PORT_DST = 2055
+
 # Netflow5
 nfh = NetflowHeader(version=5)
 # No need the count field! see rb_netflow.py:post_build
@@ -247,11 +252,13 @@ records = [
         src_mask=0,dst_mask=0,pad2=0)
 ]
 
-data = Ether()/IP()/UDP(sport=60000,dport=2055)/nfh/nf5h
+data = IP(dst=IP_DST)/UDP(dport=PORT_DST)/nfh/nf5h
 for r in records:
     data/=r
 
 wrpcap('5.pcap',data)
+
+send(data)
 
 ## Netflow9
 
