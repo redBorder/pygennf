@@ -22,7 +22,7 @@ from rb_netflow import *
 
 # Netflow10
 
-header_v10 = NetflowHeaderv10(version=10, length=508, ExportTime=1380127358,\
+header_v10 = NetflowHeaderv10(version=10, length=0, ExportTime=1380127358,\
                               FlowSequence=11268, ObservationDomainId = 256)
 
 set_header_1 = Flow_Set_v10(FlowSet_id= 2, FlowSet_Length=100)
@@ -107,19 +107,8 @@ flows = [
          length2=6, EPE2_A=0x030000, EPE2_B=0x503402,\
          length3=6, EPE3_A=0x030000, EPE3_B=0x503403,\
          length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
-          Octects=40, packets=1, startTime=0x7a582020,\
-         EndTime=0x7a582020), #5 #6
-    Flow_v10(\
-         src="192.168.210.154", dst="10.13.91.211", IPVersion=4,prot=6,\
-         srcport=9090, dstport=2339, FER=3, biflow_direction=1, SamplerID=0,
-         EPE_A=0x8f53b990, EPE_B=0x00010000, applicationID_id=13,\
-         applicationID_type=1,\
-         length1=6, EPE1_A=0x030000, EPE1_B=0x503401,\
-         length2=6, EPE2_A=0x030000, EPE2_B=0x503402,\
-         length3=6, EPE3_A=0x030000, EPE3_B=0x503403,\
-         length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
-         Octects=40, packets=1, startTime=2052595,\
-         EndTime=2052595)
+         Octects=40, packets=1, startTime=0x7a582020,\
+         EndTime=0x7a582020) #5 #6
 ]
 
 

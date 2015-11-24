@@ -124,6 +124,21 @@ class NetflowHeaderv10(Packet):
                     IntField("ObservationDomainId", 256)
     ]
 
+    def post_build(self, p, pay):
+        if 0 == self.length:
+            self.length = len(pay)
+            module = self.length % 4
+            pay = pay + (4-module)*"\x00"
+            # 16 because NF10 header
+            self.length += (4-module) + 16
+            p = p[0:2] + chr(self.length>>8) + chr(self.length%256) + p[4:]
+        else:
+            # 16 because NF10 header
+            pad = self.length - len(pay) - 16
+            pay = pay + "\x00"*pad
+            print pad
+        return p+pay
+
 
 class Flow_Set_v10(Packet):
     name = "Netflow flow header"
