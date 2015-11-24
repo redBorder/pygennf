@@ -59,61 +59,67 @@ flows = [
     Flow_v10(\
          src="192.168.210.154", dst="10.13.91.211", IPVersion=4,prot=6,\
          srcport=9090, dstport=2284, FER=3, biflow_direction=1, SamplerID=0,\
-         EPE_A=0x8f53b990, EPE_B=0x00010000, applicationID=13, \
+         EPE_A=0x8f53b990, EPE_B=0x00010000, applicationID_id=13,\
+         applicationID_type=1,\
          length1=6, EPE1_A=0x030000, EPE1_B=0x503401,\
          length2=6, EPE2_A=0x030000, EPE2_B=0x503402,\
          length3=6, EPE3_A=0x030000, EPE3_B=0x503403,\
          length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
-         Octects=40, packets=1, startTime=2052594, EndTime=2052594),
+         Octects=40, packets=1, startTime=0x7a581bc0, EndTime=0x7a581bc0),
     Flow_v10(\
          src="192.168.210.154", dst="10.13.91.211", IPVersion=4,prot=6,\
          srcport=9090, dstport=2336, FER=3, biflow_direction=1, SamplerID=0,\
-         EPE_A=0x8f492490, EPE_B=0x00010000, applicationID=13,
+         EPE_A=0x8f492490, EPE_B=0x00010000, applicationID_id=13,\
+         applicationID_type=1,\
          length1=6, EPE1_A=0x030000, EPE1_B=0x503401,\
          length2=6, EPE2_A=0x030000, EPE2_B=0x503402,\
          length3=6, EPE3_A=0x030000, EPE3_B=0x503403,\
          length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
-         Octects=40, packets=1, startTime=2052594, EndTime=2052594),
+         Octects=40, packets=1, startTime=0x7a581c00, EndTime=0x7a581c00),
     Flow_v10(\
          src="184.28.16.177", dst="10.25.31.220", IPVersion=4,prot=6,\
          srcport=443, dstport=55886, FER=3, biflow_direction=1, SamplerID=0,\
-         EPE_A=0x8f518c50, EPE_B=0x00010000, applicationID=13,
+         EPE_A=0x8f518c50, EPE_B=0x00010000, applicationID_id=13,\
+         applicationID_type=1,\
          length1=6, EPE1_A=0x030000, EPE1_B=0x503401,\
          length2=6, EPE2_A=0x030000, EPE2_B=0x503402,\
          length3=6, EPE3_A=0x030000, EPE3_B=0x503403,\
          length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
-         Octects=60, packets=1, startTime=2052595,\
-         EndTime=2052595), #3 #4
+         Octects=60, packets=1, startTime=0x7a581d60,\
+         EndTime=0x7a581d60), #3 #4
     Flow_v10(\
          src="192.168.210.154", dst="10.13.91.211", IPVersion=4,prot=6,\
          srcport=9090, dstport=2339, FER=3, biflow_direction=1, SamplerID=0,\
-         EPE_A=0x8f53b990, EPE_B=0x00010000, applicationID=13,
+         EPE_A=0x8f53b990, EPE_B=0x00010000, applicationID_id=13,\
+         applicationID_type=1,\
+         length1=6, EPE1_A=0x030000, EPE1_B=0x503401,\
+         length2=6, EPE2_A=0x030000, EPE2_B=0x503402,\
+         length3=6, EPE3_A=0x030000, EPE3_B=0x503403,\
+         length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
+         Octects=40, packets=1, startTime=0x7a581e60,\
+         EndTime=0x7a581e60), #4 #5
+    Flow_v10(\
+         src="192.168.210.154", dst="10.13.102.120", IPVersion=4,prot=6,\
+         srcport=9090, dstport=50185, FER=3, biflow_direction=1, SamplerID=0,\
+         EPE_A=0x8f53b990, EPE_B=0x00010000,applicationID_id=13,\
+         applicationID_type=1,\
+         length1=6, EPE1_A=0x030000, EPE1_B=0x503401,\
+         length2=6, EPE2_A=0x030000, EPE2_B=0x503402,\
+         length3=6, EPE3_A=0x030000, EPE3_B=0x503403,\
+         length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
+          Octects=40, packets=1, startTime=0x7a582020,\
+         EndTime=0x7a582020), #5 #6
+    Flow_v10(\
+         src="192.168.210.154", dst="10.13.91.211", IPVersion=4,prot=6,\
+         srcport=9090, dstport=2339, FER=3, biflow_direction=1, SamplerID=0,
+         EPE_A=0x8f53b990, EPE_B=0x00010000, applicationID_id=13,\
+         applicationID_type=1,\
          length1=6, EPE1_A=0x030000, EPE1_B=0x503401,\
          length2=6, EPE2_A=0x030000, EPE2_B=0x503402,\
          length3=6, EPE3_A=0x030000, EPE3_B=0x503403,\
          length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
          Octects=40, packets=1, startTime=2052595,\
-         EndTime=2052595), #4 #5
-    Flow_v10(\
-         src="192.168.210.154", dst="10.13.102.120", IPVersion=4,prot=6,\
-         srcport=9090, dstport=50185, FER=3, biflow_direction=1, SamplerID=0,\
-         EPE_A=0x8f53b990, EPE_B=0x00010000, applicationID=13,
-         length1=6, EPE1_A=0x030000, EPE1_B=0x503401,\
-         length2=6, EPE2_A=0x030000, EPE2_B=0x503402,\
-         length3=6, EPE3_A=0x030000, EPE3_B=0x503403,\
-         length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
-          Octects=40, packets=1, startTime=2052595,\
-         EndTime=2052595), #5 #6
-    Flow_v10(\
-         src="192.168.210.154", dst="10.13.91.211", IPVersion=4,prot=6,\
-         srcport=9090, dstport=2339, FER=3, biflow_direction=1, SamplerID=0,
-         EPE_A=0x8f53b990, EPE_B=0x00010000, applicationID=13,
-         length1=6, EPE1_A=0x030000, EPE1_B=0x503401,\
-         length2=6, EPE2_A=0x030000, EPE2_B=0x503402,\
-         length3=6, EPE3_A=0x030000, EPE3_B=0x503403,\
-         length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
-         Octects=40, packets=1, startTime=2052596,\
-         EndTime=2052596)
+         EndTime=2052595)
 ]
 
 
@@ -126,6 +132,7 @@ for t in template:
 data/=set_header_2
 
 for f in flows:
+    print "aaaaa"
     data/=f
 
 

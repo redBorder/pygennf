@@ -22,7 +22,7 @@ from rb_netflow import *
 
 # Netflow9
 
-header_v9 = Netflow_Headerv9(version=9, count= 2, SysUptime= 27.027095000, Timestamp=1392292623, FlowSequence= 0,SourceId= 243)
+header_v9 = Netflow_Headerv9(version=9, count= 2, SysUptime=0x000069d7, Timestamp=1392292623, FlowSequence= 0,SourceId= 243)
 
 
 flowSet_header_v9 = FlowSet_Header_v9(FlowSet_id= 0, FlowSet_length=80)
@@ -58,7 +58,7 @@ flows = [
     Flow_v9(\
         Packets=826, Protocol=17, IP_ToS=0x00, TCP_Flags=0x00, Octets=113162,\
         SrcPort=2416, InputInt=0, DstPort=53, OutputInt=0, SrcAS=0, DstAS=0,\
-        StartTime=0.002000000, EndTime=27.061000000,\
+        StartTime=0x000069b5, EndTime=0x00000002,\
         SrcAddr="3ffe:507:0:1:200:86ff:fe05:80da",\
         DstAddr="3ffe:501:4819::42", SrcMask=0, DstMask=0, NextHop="::", 
         Padding=3)

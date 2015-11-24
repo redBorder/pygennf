@@ -169,7 +169,8 @@ class Flow_v10(Packet):
                     ByteField("SamplerID", 0),
                     XIntField("EPE_A", 0x8f53b990),
                     XIntField("EPE_B", 0x00010000), # ERROROR: HEX ???
-                    IntField('applicationID', 13),
+                    ByteField('applicationID_id', 13),
+                    BitFieldLenField('applicationID_type', 0, 24),
                     ByteField('length1', 6),
                     X3BytesField("EPE1_A",0x03401),
                     X3BytesField("EPE1_B",0x03000),
@@ -184,8 +185,8 @@ class Flow_v10(Packet):
                     X3BytesField("EPE4_B",0x03404),
                     BitFieldLenField("Octects", 40 , 64),
                     IntField("packets", 1),
-                    IEEEFloatField("startTime", 2052594),
-                    IEEEFloatField("EndTime", 2052594),
+                    XIntField("startTime", 0x7a581bc0),
+                    XIntField("EndTime", 0x7a581bc0),
     ]
 
 
@@ -202,7 +203,7 @@ class Netflow_Headerv9(Packet):
     fields_desc = [
                     ShortField("version", 10),
                     ShortField("count", 3),
-                    IEEEFloatField("SysUptime", 27.027095000),
+                    XIntField("SysUptime", 0x000069d7),
                     IntField("Timestamp",1392292623),
                     IntField("FlowSequence", 0),
                     IntField("SourceId", 243)
@@ -253,8 +254,8 @@ class Flow_v9(Packet):
             ShortField("OutputInt", 0),
             IntField("SrcAS", 0),
             IntField("DstAS", 0),
-            IEEEFloatField("StartTime", 0.002000000),
-            IEEEFloatField("EndTime", 27.061000000),
+            XIntField("StartTime", 0x00000002),
+            XIntField("EndTime", 0x000069b5),
             IP6Field("SrcAddr", "3ffe:507:0:1:200:86ff:fe05:80da"),
             IP6Field("DstAddr", "3ffe:501:4819::42"),
             ByteField("SrcMask", 0),
