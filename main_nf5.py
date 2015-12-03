@@ -27,7 +27,7 @@ PORT_SRC = 2055
 PORT_DST = 2055
 
 #Current timestamp in seconds
-tnow=(datetime.datetime.now()-datetime.datetime(1970,1,1)).total_seconds()
+tnow=(datetime.datetime.utcnow()-datetime.datetime(1970,1,1)).total_seconds()
 
 # Netflow5
 nfh = NetflowHeader(version=5)
