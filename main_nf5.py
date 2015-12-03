@@ -19,18 +19,22 @@
 import scapy
 from scapy.all import *
 from rb_netflow import *
+import datetime
 
 IP_SRC = "10.0.203.2"
 IP_DST = "10.0.30.89"
 PORT_SRC = 2055
 PORT_DST = 2055
 
+#Current timestamp in seconds
+tnow=(datetime.datetime.now()-datetime.datetime(1970,1,1)).total_seconds()
+
 # Netflow5
 nfh = NetflowHeader(version=5)
 # No need the count field! see rb_netflow.py:post_build
 nf5h = NetflowHeaderV5(\
 	sysUptime = 0x3e80,\
-	unixSecs = 0x52d3af70,\
+	unixSecs = tnow,\
 	unixNanoSeconds = 0x04bdb6f0,\
 	flowSequence = 48,\
 	engineType = 0,\
