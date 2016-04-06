@@ -19,13 +19,41 @@
 import scapy
 from scapy.all import *
 from rb_netflow import *
+import argparse
 
 # Netflow9
 
-IP_SRC = "10.0.203.2"
-IP_DST = "10.0.30.89"
-PORT_SRC = 2055
-PORT_DST = 2055
+parser = argparse.ArgumentParser(description='UDP packets producer with scapy')
+parser.add_argument('-s', '--source-ip', dest='src_ip',
+                    help='IP source')
+parser.add_argument('-sp', '--source-port', dest='src_port',
+                    help='Port dst')
+parser.add_argument('-d', '--dst-ip', dest='dst_ip',
+                    help='IP source')
+parser.add_argument('-dp', '--dst-port', dest='dst_port',
+                    help='Port dst')
+
+args = parser.parse_args()
+
+if args.src_ip:
+    IP_SRC = args.src_ip
+else:
+    IP_SRC = "10.0.203.2"
+
+if args.dst_ip:
+    IP_DST = args.dst_ip
+else:
+    IP_DST = "10.0.30.89"
+
+if args.src_port:
+    PORT_SRC = args.src_port
+else:
+    PORT_SRC = 2056
+
+if args.dst_port:
+    PORT_DST = args.dst_port
+else:
+    PORT_DST = 2055
 
 header_v9 = Netflow_Headerv9(version=9, count= 2, SysUptime=0x000069d7, Timestamp=1392292623, FlowSequence= 0,SourceId= 243)
 
