@@ -16,18 +16,46 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import argparse
+
 import scapy
 from scapy.all import *
+
 from rb_netflow import *
 
-IP_SRC = "10.0.203.2"
-IP_DST = "10.0.30.89"
-PORT_SRC = 2055
-PORT_DST = 2055
-#IP_SRC = "10.0.30.89"
-#IP_DST = "10.0.203.2"
-# Netflow10
+parser = argparse.ArgumentParser(description='UDP packets producer with scapy')
+parser.add_argument('-s', '--source-ip', dest='src_ip',
+                    help='IP source')
+parser.add_argument('-sp', '--source-port', dest='src_port',
+                    help='Port dst')
+parser.add_argument('-d', '--dst-ip', dest='dst_ip',
+                    help='IP source')
+parser.add_argument('-dp', '--dst-port', dest='dst_port',
+                    help='Port dst')
 
+args = parser.parse_args()
+
+if args.src_ip:
+    IP_SRC = args.src_ip
+else:
+    IP_SRC = "10.0.203.2"
+
+if args.dst_ip:
+    IP_DST = args.dst_ip
+else:
+    IP_DST = "10.0.30.89"
+
+if args.src_port:
+    PORT_SRC = args.src_port
+else:
+    PORT_SRC = 2056
+
+if args.dst_port:
+    PORT_DST = args.dst_port
+else:
+    PORT_DST = 2055
+
+# Netflow10
 header_v10 = NetflowHeaderv10(version=10, length=0, ExportTime=1380127358,\
                               FlowSequence=11268, ObservationDomainId = 256)
 
@@ -134,7 +162,3 @@ for f in flows:
 
 wrpcap('v10.pcap', data)
 send(data)
-## Netflow9
-
-#nf9fs = NetflowV9Flowset()
-#nf9fs.addfield(MACField("ClientMac","00:16:6f:35:25:61"))
