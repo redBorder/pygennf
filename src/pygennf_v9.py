@@ -17,6 +17,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
+import time
 
 import scapy
 from scapy.all import *
@@ -34,6 +35,8 @@ parser.add_argument('-d', '--dst-ip', dest='dst_ip',
                     help='IP source')
 parser.add_argument('-dp', '--dst-port', dest='dst_port',
                     help='Port dst')
+parser.add_argument('-t', '--time-interval', dest='time_interval',
+                    help='Time interval to wait to send other messages.')
 
 args = parser.parse_args()
 
@@ -56,6 +59,11 @@ if args.dst_port:
     PORT_DST = args.dst_port
 else:
     PORT_DST = 2055
+
+if args.time_interval:
+    TIME_INTERVAL = args.time_interval
+else:
+    TIME_INTERVAL = 0
 
 header_v9 = rbnf.Netflow_Headerv9(version=9, count= 2, SysUptime=0x000069d7, Timestamp=1392292623, FlowSequence= 0,SourceId= 243)
 
@@ -114,3 +122,8 @@ for f in flows:
 
 wrpcap('v9.pcap', data)
 send(data)
+
+while TIME_INTERVAL is not 0:
+    time.sleep(float(TIME_INTERVAL))
+    send(data)
+

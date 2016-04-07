@@ -18,7 +18,7 @@
 
 import argparse
 import datetime
-
+import time
 import scapy
 from scapy.all import *
 
@@ -33,6 +33,8 @@ parser.add_argument('-d', '--dst-ip', dest='dst_ip',
                     help='IP source')
 parser.add_argument('-dp', '--dst-port', dest='dst_port',
                     help='Port dst')
+parser.add_argument('-t', '--time-interval', dest='time_interval',
+                    help='Time interval to wait to send other messages.')
 
 args = parser.parse_args()
 
@@ -50,6 +52,12 @@ if args.src_port:
     PORT_SRC = args.src_port
 else:
     PORT_SRC = 2056
+
+if args.time_interval:
+    TIME_INTERVAL = args.time_interval
+else:
+    TIME_INTERVAL = 0
+
 
 if args.dst_port:
     PORT_DST = args.dst_port
@@ -294,6 +302,10 @@ for r in records:
 wrpcap('5.pcap',data)
 
 send(data)
+
+while TIME_INTERVAL is not 0:
+    time.sleep(float(TIME_INTERVAL))
+    send(data)
 
 ## Netflow9
 
