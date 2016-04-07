@@ -16,10 +16,12 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import argparse
+
 import scapy
 from scapy.all import *
-from rb_netflow import *
-import argparse
+
+import rb_netflow.rb_netflow as rbnf
 
 # Netflow9
 
@@ -55,40 +57,40 @@ if args.dst_port:
 else:
     PORT_DST = 2055
 
-header_v9 = Netflow_Headerv9(version=9, count= 2, SysUptime=0x000069d7, Timestamp=1392292623, FlowSequence= 0,SourceId= 243)
+header_v9 = rbnf.Netflow_Headerv9(version=9, count= 2, SysUptime=0x000069d7, Timestamp=1392292623, FlowSequence= 0,SourceId= 243)
 
 
-flowSet_header_v9 = FlowSet_Header_v9(FlowSet_id= 0, FlowSet_length=80)
+flowSet_header_v9 = rbnf.FlowSet_Header_v9(FlowSet_id= 0, FlowSet_length=80)
 
 
-flowset_id_v9 = FlowTemplate_ID_v9(template_id=258,count=18)
+flowset_id_v9 = rbnf.FlowTemplate_ID_v9(template_id=258,count=18)
 
 template = [
-    NetFlowTemplatev9Field(type_template=1, length= 4),
-    NetFlowTemplatev9Field(type_template=2, length= 4),
-    NetFlowTemplatev9Field(type_template=4, length= 1),
-    NetFlowTemplatev9Field(type_template=5, length= 1),
-    NetFlowTemplatev9Field(type_template=6, length= 1),
-    NetFlowTemplatev9Field(type_template=7, length= 2),
-    NetFlowTemplatev9Field(type_template=10, length= 2),
-    NetFlowTemplatev9Field(type_template=11, length= 2),
-    NetFlowTemplatev9Field(type_template=14, length= 2),
-    NetFlowTemplatev9Field(type_template=16, length= 4),
-    NetFlowTemplatev9Field(type_template=17, length= 4),
-    NetFlowTemplatev9Field(type_template=21, length= 4),
-    NetFlowTemplatev9Field(type_template=22, length= 4),
-    NetFlowTemplatev9Field(type_template=27, length= 16),
-    NetFlowTemplatev9Field(type_template=28, length= 16),
-    NetFlowTemplatev9Field(type_template=29, length= 1),
-    NetFlowTemplatev9Field(type_template=30, length= 1),
-    NetFlowTemplatev9Field(type_template=62, length= 16)
+    rbnf.NetFlowTemplatev9Field(type_template=1, length= 4),
+    rbnf.NetFlowTemplatev9Field(type_template=2, length= 4),
+    rbnf.NetFlowTemplatev9Field(type_template=4, length= 1),
+    rbnf.NetFlowTemplatev9Field(type_template=5, length= 1),
+    rbnf.NetFlowTemplatev9Field(type_template=6, length= 1),
+    rbnf.NetFlowTemplatev9Field(type_template=7, length= 2),
+    rbnf.NetFlowTemplatev9Field(type_template=10, length= 2),
+    rbnf.NetFlowTemplatev9Field(type_template=11, length= 2),
+    rbnf.NetFlowTemplatev9Field(type_template=14, length= 2),
+    rbnf.NetFlowTemplatev9Field(type_template=16, length= 4),
+    rbnf.NetFlowTemplatev9Field(type_template=17, length= 4),
+    rbnf.NetFlowTemplatev9Field(type_template=21, length= 4),
+    rbnf.NetFlowTemplatev9Field(type_template=22, length= 4),
+    rbnf.NetFlowTemplatev9Field(type_template=27, length= 16),
+    rbnf.NetFlowTemplatev9Field(type_template=28, length= 16),
+    rbnf.NetFlowTemplatev9Field(type_template=29, length= 1),
+    rbnf.NetFlowTemplatev9Field(type_template=30, length= 1),
+    rbnf.NetFlowTemplatev9Field(type_template=62, length= 16)
     ]
 
-flowSet_2_header = FlowSet_Header_v9(FlowSet_id= 258, FlowSet_length=92)
+flowSet_2_header = rbnf.FlowSet_Header_v9(FlowSet_id= 258, FlowSet_length=92)
 
 
 flows = [
-    Flow_v9(\
+    rbnf.Flow_v9(\
         Packets=826, Protocol=17, IP_ToS=0x00, TCP_Flags=0x00, Octets=113162,\
         SrcPort=2416, InputInt=0, DstPort=53, OutputInt=0, SrcAS=0, DstAS=0,\
         StartTime=0x000069b5, EndTime=0x00000002,\

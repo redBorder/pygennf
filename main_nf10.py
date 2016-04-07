@@ -21,7 +21,7 @@ import argparse
 import scapy
 from scapy.all import *
 
-from rb_netflow import *
+import rb_netflow.rb_netflow as rbnf
 
 parser = argparse.ArgumentParser(description='UDP packets producer with scapy')
 parser.add_argument('-s', '--source-ip', dest='src_ip',
@@ -56,41 +56,41 @@ else:
     PORT_DST = 2055
 
 # Netflow10
-header_v10 = NetflowHeaderv10(version=10, length=0, ExportTime=1380127358,\
+header_v10 = rbnf.NetflowHeaderv10(version=10, length=0, ExportTime=1380127358,\
                               FlowSequence=11268, ObservationDomainId = 256)
 
-set_header_1 = Flow_Set_v10(FlowSet_id= 2, FlowSet_Length=100)
+set_header_1 = rbnf.Flow_Set_v10(FlowSet_id= 2, FlowSet_Length=100)
 
-template_id = FlowTemplate_ID_v10(template_id=269, count=19)
+template_id = rbnf.FlowTemplate_ID_v10(template_id=269, count=19)
 
 template = [
-    NetFlowTemplatev10Field(Pen_provided=0,type=8,length=4),
-    NetFlowTemplatev10Field(Pen_provided=0,type=12,length=4),
-    NetFlowTemplatev10Field(Pen_provided=0,type=60,length=1),
-    NetFlowTemplatev10Field(Pen_provided=0,type=4,length=1),
-    NetFlowTemplatev10Field(Pen_provided=0,type=7,length=2),
-    NetFlowTemplatev10Field(Pen_provided=0,type=11,length=2),
-    NetFlowTemplatev10Field(Pen_provided=0,type=136,length=1),
-        NetFlowTemplatev10Field(Pen_provided=0,type=239,length=1),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=8,length=4),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=12,length=4),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=60,length=1),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=4,length=1),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=7,length=2),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=11,length=2),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=136,length=1),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=239,length=1),
 
-    NetFlowTemplatev10Field(Pen_provided=0,type=48,length=1),
-    NetFlowTemplatev10Field(Pen_provided=0,type=280,length=8),
-    NetFlowTemplatev10Field(Pen_provided=0,type=95,length=4),
-    NetFlowTemplatev10FieldPEN(),
-    NetFlowTemplatev10FieldPEN(),
-    NetFlowTemplatev10FieldPEN(),
-    NetFlowTemplatev10FieldPEN(),
-    NetFlowTemplatev10Field(Pen_provided=0,type=1,length=8),
-    NetFlowTemplatev10Field(Pen_provided=0,type=2,length=4),
-    NetFlowTemplatev10Field(Pen_provided=0,type=22,length=4),
-    NetFlowTemplatev10Field(Pen_provided=0,type=21,length=4)
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=48,length=1),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=280,length=8),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=95,length=4),
+    rbnf.NetFlowTemplatev10FieldPEN(),
+    rbnf.NetFlowTemplatev10FieldPEN(),
+    rbnf.NetFlowTemplatev10FieldPEN(),
+    rbnf.NetFlowTemplatev10FieldPEN(),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=1,length=8),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=2,length=4),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=22,length=4),
+    rbnf.NetFlowTemplatev10Field(Pen_provided=0,type=21,length=4)
 ]
 
-set_header_2 = Flow_Set_v10(FlowSet_id= 269, FlowSet_Length=392)
+set_header_2 = rbnf.Flow_Set_v10(FlowSet_id= 269, FlowSet_Length=392)
 
 
 flows = [
-    Flow_v10(\
+    rbnf.Flow_v10(\
          src="192.168.210.154", dst="10.13.91.211", IPVersion=4,prot=6,\
          srcport=9090, dstport=2284, FER=3, biflow_direction=1, SamplerID=0,\
          EPE_A=0x8f53b990, EPE_B=0x00010000, applicationID_id=13,\
@@ -100,7 +100,7 @@ flows = [
          length3=6, EPE3_A=0x030000, EPE3_B=0x503403,\
          length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
          Octects=40, packets=1, startTime=0x7a581bc0, EndTime=0x7a581bc0),
-    Flow_v10(\
+    rbnf.Flow_v10(\
          src="192.168.210.154", dst="10.13.91.211", IPVersion=4,prot=6,\
          srcport=9090, dstport=2336, FER=3, biflow_direction=1, SamplerID=0,\
          EPE_A=0x8f492490, EPE_B=0x00010000, applicationID_id=13,\
@@ -110,7 +110,7 @@ flows = [
          length3=6, EPE3_A=0x030000, EPE3_B=0x503403,\
          length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
          Octects=40, packets=1, startTime=0x7a581c00, EndTime=0x7a581c00),
-    Flow_v10(\
+    rbnf.Flow_v10(\
          src="184.28.16.177", dst="10.25.31.220", IPVersion=4,prot=6,\
          srcport=443, dstport=55886, FER=3, biflow_direction=1, SamplerID=0,\
          EPE_A=0x8f518c50, EPE_B=0x00010000, applicationID_id=13,\
@@ -121,7 +121,7 @@ flows = [
          length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
          Octects=60, packets=1, startTime=0x7a581d60,\
          EndTime=0x7a581d60), #3 #4
-    Flow_v10(\
+    rbnf.Flow_v10(\
          src="192.168.210.154", dst="10.13.91.211", IPVersion=4,prot=6,\
          srcport=9090, dstport=2339, FER=3, biflow_direction=1, SamplerID=0,\
          EPE_A=0x8f53b990, EPE_B=0x00010000, applicationID_id=13,\
@@ -132,7 +132,7 @@ flows = [
          length4=6, EPE4_A=0x030000, EPE4_B=0x503404,\
          Octects=40, packets=1, startTime=0x7a581e60,\
          EndTime=0x7a581e60), #4 #5
-    Flow_v10(\
+    rbnf.Flow_v10(\
          src="192.168.210.154", dst="10.13.102.120", IPVersion=4,prot=6,\
          srcport=9090, dstport=50185, FER=3, biflow_direction=1, SamplerID=0,\
          EPE_A=0x8f53b990, EPE_B=0x00010000,applicationID_id=13,\
