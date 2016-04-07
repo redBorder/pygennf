@@ -7,7 +7,7 @@ setup(name="pygennf",
       author_email="anarey@redborder.com",
       url="https://github.com/redBorder/",
       license="AGPL",
-      scripts=["main_nf9.py", "main_nf10.py", "main_nf5.py" ],
+      scripts=["src/main_nf9.py", "src/main_nf10.py", "src/main_nf5.py" ],
       packages=['rb_netflow'],
       install_requires=[
           'scapy',
