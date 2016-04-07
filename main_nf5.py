@@ -16,11 +16,13 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import argparse
+import datetime
+
 import scapy
 from scapy.all import *
+
 from rb_netflow import *
-import datetime
-import argparse
 
 parser = argparse.ArgumentParser(description='UDP packets producer with scapy')
 parser.add_argument('-s', '--source-ip', dest='src_ip',
