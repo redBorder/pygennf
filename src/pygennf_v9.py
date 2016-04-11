@@ -65,14 +65,14 @@ def main():
         IP_DST = "10.0.30.89"
 
     if args.src_port:
-        PORT_SRC = args.src_port
+        PORT_SRC = int(args.src_port)
     else:
-        PORT_SRC = 2056
+        PORT_SRC = int(2056)
 
     if args.dst_port:
-        PORT_DST = args.dst_port
+        PORT_DST = int(args.dst_port)
     else:
-        PORT_DST = 2055
+        PORT_DST = int(2055)
 
     if args.time_interval:
         TIME_INTERVAL = args.time_interval
