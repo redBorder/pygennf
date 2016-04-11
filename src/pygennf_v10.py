@@ -36,6 +36,9 @@ def signal_handler(signal, frame):
     signal_received = 1
 
 def main():
+    if os.getuid() != 0:
+        print "You need to be root to run this, sorry."
+        return
 
     parser = argparse.ArgumentParser(description='UDP packets producer with scapy')
     parser.add_argument('-s', '--source-ip', dest='src_ip',
