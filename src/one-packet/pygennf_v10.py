@@ -63,6 +63,9 @@ def main():
         IP_DST = args.dst_ip
     else:
         IP_DST = "10.0.30.89"
+
+    if IP_SRC is "127.0.0.1" and IP_DST is "127.0.0.1":
+        conf.L3socket=L3RawSocket
     
     if args.src_port:
         PORT_SRC = int(args.src_port)

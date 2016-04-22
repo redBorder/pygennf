@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
-
+#
 #  pygennf: UDP packets producer with scapy.
-#  Copyright (C) 2015-2016  Eugenio Perez <eugenio@redborder.com>
+#  Copyright (C) 2015-2016  Ana Rey <anarey@redborder.com>
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as
@@ -17,9 +17,9 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
-import datetime
-import signal
 import time
+import signal
+
 
 import scapy
 from scapy.all import *
@@ -28,13 +28,17 @@ import rb_netflow.rb_netflow as rbnf
 
 signal_received = 0
 
+
 def preexec():
     os.setpgrp()  # Don't forward signals
+
 
 def signal_handler(signal, frame):
     global signal_received
     signal_received = 1
 
+
+# Netflow9
 def main():
     if os.getuid() != 0:
         print "You need to be root to run this, sorry."
@@ -58,7 +62,7 @@ def main():
         IP_SRC = args.src_ip
     else:
         IP_SRC = "10.0.203.2"
-    
+
     if args.dst_ip:
         IP_DST = args.dst_ip
     else:
@@ -67,60 +71,78 @@ def main():
     if IP_SRC is "127.0.0.1" and IP_DST is "127.0.0.1":
         conf.L3socket=L3RawSocket
 
+
     if args.src_port:
         PORT_SRC = int(args.src_port)
     else:
         PORT_SRC = int(2056)
-    
-    if args.time_interval:
-        TIME_INTERVAL = args.time_interval
-    else:
-        TIME_INTERVAL = 0
-    
-    
+
     if args.dst_port:
         PORT_DST = int(args.dst_port)
     else:
         PORT_DST = int(2055)
-    
+
+    if args.time_interval:
+        TIME_INTERVAL = args.time_interval
+    else:
+        TIME_INTERVAL = 0
+
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
 
-    #Current timestamp in seconds
-    tnow=(datetime.datetime.utcnow()-datetime.datetime(1970,1,1)).seconds
+    header_v9 = rbnf.Netflow_Headerv9(version=9, count= 2, SysUptime=0x000069d7, Timestamp=1392292623, FlowSequence= 0,SourceId= 243)
+
+    flowSet_header_v9 = rbnf.FlowSet_Header_v9(FlowSet_id= 0, FlowSet_length=80)
+
+    flowset_id_v9 = rbnf.FlowTemplate_ID_v9(template_id=258,count=18)
+
+    template = [
+        rbnf.NetFlowTemplatev9Field(type_template=1, length= 4),
+        rbnf.NetFlowTemplatev9Field(type_template=2, length= 4),
+        rbnf.NetFlowTemplatev9Field(type_template=4, length= 1),
+        rbnf.NetFlowTemplatev9Field(type_template=5, length= 1),
+        rbnf.NetFlowTemplatev9Field(type_template=6, length= 1),
+        rbnf.NetFlowTemplatev9Field(type_template=7, length= 2),
+        rbnf.NetFlowTemplatev9Field(type_template=10, length= 2),
+        rbnf.NetFlowTemplatev9Field(type_template=11, length= 2),
+        rbnf.NetFlowTemplatev9Field(type_template=14, length= 2),
+        rbnf.NetFlowTemplatev9Field(type_template=16, length= 4),
+        rbnf.NetFlowTemplatev9Field(type_template=17, length= 4),
+        rbnf.NetFlowTemplatev9Field(type_template=21, length= 4),
+        rbnf.NetFlowTemplatev9Field(type_template=22, length= 4),
+        rbnf.NetFlowTemplatev9Field(type_template=27, length= 16),
+        rbnf.NetFlowTemplatev9Field(type_template=28, length= 16),
+        rbnf.NetFlowTemplatev9Field(type_template=29, length= 1),
+        rbnf.NetFlowTemplatev9Field(type_template=30, length= 1),
+        rbnf.NetFlowTemplatev9Field(type_template=62, length= 16)
+        ]
+
+    flowSet_2_header = rbnf.FlowSet_Header_v9(FlowSet_id= 258, FlowSet_length=92)
 
 
-    # Netflow5
-    nfh = rbnf.NetflowHeader(version=5)
-    # No need the count field! see rb_netflow.py:post_build
-    nf5h = rbnf.NetflowHeaderV5(\
-        sysUptime = 0x3e80,\
-        unixSecs = tnow,\
-        unixNanoSeconds = 0x04bdb6f0,\
-        flowSequence = 48,\
-        engineType = 0,\
-        engineID = 0,\
-        samplingInterval = 0)
-    
-    # wireshark File -> export specified packet dissections -> as plain text
+    flows = [
+        rbnf.Flow_v9(\
+            Packets=826, Protocol=17, IP_ToS=0x00, TCP_Flags=0x00, Octets=113162,\
+            SrcPort=2416, InputInt=0, DstPort=53, OutputInt=0, SrcAS=0, DstAS=0,\
+            StartTime=0x000069b5, EndTime=0x00000002,\
+            SrcAddr="3ffe:507:0:1:200:86ff:fe05:80da",\
+            DstAddr="3ffe:501:4819::42", SrcMask=0, DstMask=0, NextHop="::", 
+            Padding=3)
+        ]
 
-    records = [
-        rbnf.NetflowRecordV5(\
-            src = IP_SRC,dst=IP_DST,nexthop="0.0.0.0",\
-            input=0,output=0,dpkts=1,dOctets=72,\
-            first=1,last=2,srcport=PORT_SRC,\
-            dstport=PORT_DST,pad1=0,tcpFlags=0x00,\
-            prot=17,tos=0x00,src_as=0,dst_as=0,\
-            src_mask=0,dst_mask=0,pad2=0)
- 
-    ]
-    
-    data = IP(dst=IP_DST, version=4)/UDP(dport=PORT_DST)/nfh/nf5h
-    for r in records:
-        data/=r
 
-    wrpcap('5.pcap',data)
+    data = IP(dst=IP_DST)/UDP(sport=PORT_SRC,dport=PORT_DST)
+    data/=header_v9/flowSet_header_v9/flowset_id_v9
 
+    for t in template:
+        data/=t
+
+    data/=flowSet_2_header
+
+    for f in flows:
+        data/=f
+
+    wrpcap('v9.pcap', data)
     send(data)
 
     while TIME_INTERVAL is not 0:
@@ -130,12 +152,6 @@ def main():
         time.sleep(float(TIME_INTERVAL))
         send(data)
 
-
 if __name__ == '__main__':
     main()
 
-
-## Netflow9
-
-#nf9fs = NetflowV9Flowset()
-#nf9fs.addfield(MACField("ClientMac","00:16:6f:35:25:61"))
