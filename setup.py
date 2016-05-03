@@ -9,7 +9,7 @@ setup(name="pygennf",
       license="AGPL",
       scripts=["src/pygennf_v5.py", "src/pygennf_v9.py", "src/pygennf_v10.py" ],
       packages=['rb_netflow'],
-      install_requires=[
+      requires=[
           'scapy',
       ]
 ) 
