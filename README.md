@@ -4,9 +4,7 @@ Netflow packets generator with Scape library
 
 * Download it! [https://github.com/redBorder/pygennf/tree/master/download]
 
- > rpm: (python2.6) wget https://github.com/redBorder/pygennf/raw/master/download/pygennf-0.1-1_python26.noarch.rpm
- 
- > rpm: (python2.7) wget https://github.com/redBorder/pygennf/raw/master/download/pygennf-0.1-1.noarch.rpm
+ > rpm: (python2.6) wget https://github.com/redBorder/pygennf/raw/master/download/pygennf-0.1-1.noarch.rpm
  
  > tar.gz: wget https://github.com/redBorder/pygennf/raw/master/download/pygennf-0.1.tar.gz
 
