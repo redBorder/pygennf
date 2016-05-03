@@ -115,7 +115,7 @@ def main():
  
     ]
     
-    data = IP(dst=IP_DST, version=4)/UDP(dport=PORT_DST)/nfh/nf5h
+    data = IP(src=IP_SRC,dst=IP_DST, version=4)/UDP(sport=PORT_SRC,dport=PORT_DST)/nfh/nf5h
     for r in records:
         data/=r
 
