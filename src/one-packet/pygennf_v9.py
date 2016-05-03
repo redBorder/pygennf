@@ -68,7 +68,7 @@ def main():
     else:
         IP_DST = "10.0.30.89"
 
-    if IP_SRC is "127.0.0.1" and IP_DST is "127.0.0.1":
+    if IP_DST == "127.0.0.1":
         conf.L3socket=L3RawSocket
 
 
@@ -131,7 +131,7 @@ def main():
         ]
 
 
-    data = IP(dst=IP_DST)/UDP(sport=PORT_SRC,dport=PORT_DST)
+    data = IP(src=IP_SRC,dst=IP_DST)/UDP(sport=PORT_SRC,dport=PORT_DST)
     data/=header_v9/flowSet_header_v9/flowset_id_v9
 
     for t in template:
